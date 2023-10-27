@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Agent Analysis Dashboard</title>
+	<!-- Import custom CSS styles -->
+	<link rel="stylesheet" type="text/css" href="dashboard.css">
+	<!-- Import Font Awesome library -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-RuoegxLxrdgLwS/DvNXu12bjduoX9yAkV/VOJL1ihT0TNY8MfZoV7wtfQvYJWihcO9OgC0mG+3/LPLHCC1L8hw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+	<!-- Import Chart.js library -->
+	<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+	<header>
+		<h1>Agent Analysis Dashboard</h1>
+	</header>
+	<nav>
+		<ul>
+			<li><a href="#">Home</a></li>
+			<li><a href="#">Call Analytics</a></li>
+			<li><a href="#">Agent Performance</a></li>
+			<li><a href="#">Emotion Detection</a></li>
+		</ul>
+	</nav>
+    <br>
+	<section>
+		<h2>Agent Performance Analysis</h2>
+		<!-- Display agent's call performance data in a table -->
+		<table>
+			<thead>
+				<tr>
+					<th>Date</th>
+					<th>Duration</th>
+					<th>Satisfaction Score</th>
+					<th>Emotion Detected</th>
+					<th>Metric#3</th>
+					<th>Metric#4</th>
+					<th>Metric#5</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>2023-04-30</td>
+					<td>6 min</td>
+					<td>4.5</td>
+					<td>Happy</td>
+					<td>150 WPM</td>
+					<td>85%</td>
+					<td>70 dB</td>
+				</tr>
+				<tr>
+					<td>2023-04-29</td>
+					<td>4 min</td>
+					<td>3.5</td>
+					<td>Neutral</td>
+					<td>125 WPM</td>
+					<td>80%</td>
+					<td>65 dB</td>
+				</tr>
+				<tr>
+					<td>2023-04-27</td>
+					<td>5 min</td>
+					<td>4.0</td>
+					<td>Sad</td>
+					<td>135 WPM</td>
+					<td>90%</td>
+					<td>75 dB</td>
+				</tr>
+				<!-- Add more rows for previous calls -->
+			</tbody>
+		</table>
+	</section>
+	<section>
+		<h2>Emotion Detection Analysis</h2>
+		<!-- Display agent's emotion detection data in a pie chart -->
+		<div class="chart-container">
+			<canvas id="emotion-pie-chart"></canvas>
+		</div>
+		<script>
+			// Define data for the pie chart
+			var chartData = {
+            labels: ['Happy', 'Neutral', 'Sad', 'Angry'],
+			datasets: [{
+				data: [20, 30, 10, 40],
+				backgroundColor: [
+					'rgba(74, 219, 142, 1)',
+					'rgba(243, 156, 18, 1)',
+					'rgba(231, 76, 60, 1)',
+					'rgba(52, 152, 219, 1)'
+				],
+				borderWidth: 0
+			}]
+			};
+
+			// Get the canvas element and render the pie chart
+			var pieChart = new Chart(document.getElementById('emotion-pie-chart'), {
+				type: 'pie',
+				data: chartData,
+				options: {
+					title: {
+						display: true,
+						text: 'Emotion Distribution',
+						fontSize: 18,
+						fontColor: 'white',
+						fontFamily: 'sans-serif'
+					},
+					legend: {
+						display: true,
+						position: 'right',
+						labels: {
+							fontColor: 'white',
+							fontFamily: 'sans-serif'
+						}
+					}
+				}
+			});
+		</script>
+	</section>
+    <section>
+        <h2>Emotion Range Analysis</h2>
+        <!-- Display agent's emotion range data in a line chart -->
+        <div class="chart-container">
+            <canvas id="emotion-line-chart"></canvas>
+        </div>
+        <script>
+            // Define data for the line chart
+            var chartData = {
+                labels: ["Call Start", "5 min", "10 min", "15 min", "20 min", "Call End"],
+                datasets: [{
+                    label: "Emotion Range",
+                    data: [50, 70, 80, 60, 90, 70],
+                    borderColor: "rgba(74, 219, 142, 1)",
+                    borderWidth: 2,
+                    fill: false
+                }]
+            };
+    
+            // Get the canvas element and render the line chart
+            var lineChart = new Chart(document.getElementById('emotion-line-chart'), {
+                type: 'line',
+                data: chartData,
+                options: {
+                    title: {
+                        display: true,
+                        text: 'Emotion Range',
+                        fontSize: 18,
+                        fontColor: 'white',
+                        fontFamily: 'sans-serif'
+                    },
+                    legend: {
+                        display: false
+                    },
+                    scales: {
+                        yAxes: [{
+                            ticks: {
+                                beginAtZero: false,
+                                max: 100,
+                                min: 0,
+                                stepSize: 10
+                            },
+                            scaleLabel: {
+                                display: true,
+                                labelString: 'Emotion Range',
+                                fontColor: 'white',
+                                fontFamily: 'sans-serif'
+                            },
+                            gridLines: {
+                                color: 'rgba(255, 255, 255, 0.2)'
+                            }
+                        }],
+                        xAxes: [{
+                            ticks: {
+                                fontColor: 'white',
+                                fontFamily: 'sans-serif'
+                            },
+                            gridLines: {
+                                color: 'rgba(255, 255, 255, 0.2)'
+                            }
+                        }]
+                    }
+                }
+            });
+    
+            // Update the line chart with new data
+            function updateChartData() {
+                // Generate random data for the line chart
+                var newData = [];
+                for (var i = 0; i < 6; i++) {
+                    newData.push(Math.floor(Math.random() * 100));
+                }
+                newData[0] = 50;
+                newData[5] = 70;
+                lineChart.data.datasets[0].data = newData;
+                lineChart.update();
+            }
+    
+            // Update the line chart every 5 seconds
+            setInterval(function() {
+                updateChartData();
+            }, 5000);
+        </script>
+    </section>
+
+	<footer>
+		<p>&copy; 2023 Agent Analysis Dashboard. All rights reserved.</p>
+	</footer>
+</body>
+</html>
+
