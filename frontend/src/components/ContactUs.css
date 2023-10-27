@@ -1,0 +1,28 @@
+/* src/components/ContactUs.css */
+
+.contact-us {
+    background-color: #f2f2f2;
+    color: #333;
+    text-align: center;
+    padding: 40px;
+  }
+  
+  h2 {
+    font-size: 24px;
+    margin-bottom: 20px;
+  }
+
+  header {
+    background: #333;
+    color: #fff;
+    padding: 10px 0;
+}
+  
+  address {
+    font-size: 18px;
+  }
+  
+  strong {
+    font-weight: bold;
+  }
+  
