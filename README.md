@@ -1,1 +1,4 @@
-"# capstone-project" 
+# Speech Emotion Recognition Model using Federated Learning
+
+Emotion recognition (ER) is a useful application for call centers, as it can help avoid customer abuse, match customers with suitable agents, agent support and training, and improve customer satisfaction. Federated learning is a technique that allows training a highly accurate ER model while preserving the privacy of agents and operational secrets. FL ensures that the sensitive data stays on the local devices/servers and is not shared with a central location. The trained ER model can then be used to classify customer emotions and provide the call center managers with an analysis report depicting the emotion trend of the agent and customer. Moreover, ER through FL can also be used for quality assurance, as it can help identify areas where agents need more training or support. In summary, ER through FL is a promising approach to enhance the customer experience in call centers by using machine learning in a privacy-preserving way.
+
