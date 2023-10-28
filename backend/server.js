@@ -105,7 +105,7 @@ app.post('/login', async (req, res) => {
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, 'C:/Projects/Capstone Project/backend/uploads'); // Change this to your desired destination
+    cb(null, 'C:/Projects/capstone-project/backend/uploads'); // Change this to your desired destination
   },
   filename: (req, file, cb) => {
     cb(null, file.originalname);

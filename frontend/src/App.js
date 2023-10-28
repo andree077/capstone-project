@@ -8,6 +8,7 @@ import Homepage from './components/HomePage';
 import AboutUs from './components/AboutUs'; // Create AboutUs.js
 import ContactUs from './components/ContactUs'; // Create ContactUs.js
 import Dashboard from './components/Dashboard';
+import Analysis from './components/Analysis';
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/about" element={<AboutUs />} />
           <Route path="/contact" element={<ContactUs />} />
+          <Route path="/analysis" element={<Analysis />} />
         </Routes>
       </div>
     </Router>

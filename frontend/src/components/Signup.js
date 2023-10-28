@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom'; // Import useNavigate for routing
-import './Signup.css';
+import './css/Signup.css';
 
 function Signup() {
   const [username, setUsername] = useState('');

@@ -3,7 +3,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-import './AboutUs.css';
+import './css/AboutUs.css';
 
 function AboutUs() {
   return (

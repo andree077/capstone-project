@@ -1,14 +1,18 @@
 import React, { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars, faTimes } from '@fortawesome/free-solid-svg-icons';
+import { Link, useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
 import axios from 'axios';
 
-import './Dashboard.css';
+import './css/Dashboard.css';
 
 function Dashboard() {
+  const navigate = useNavigate();
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [activeTab, setActiveTab] = useState('Dashboard');
   const [inputtedAudio, setInputtedAudio] = useState(null);
+  const [loading, setLoading] = useState(false);
   const [employeeData, setEmployeeData] = useState({
     // Initialize the state for employee data fields
     firstName: '',
@@ -70,6 +74,7 @@ const handleUploadAudio = async () => {
   try {
     // Get the audio files from the state variable
     audioFiles = inputtedAudio;
+    setLoading(true);
 
     if (audioFiles) {
       console.log(audioFiles);
@@ -87,11 +92,22 @@ const handleUploadAudio = async () => {
   }
 };
 
+useEffect(() => {
+  // Automatically hide the loading screen after 10 seconds (10000 milliseconds)
+  if (loading) {
+    const timeoutId = setTimeout(() => {
+      setLoading(false);
+      clearTimeout(timeoutId);
+      navigate('/analysis');
+    }, 10000); // 10 seconds
+  }
+}, [loading]);
+
 
 
   return (
     <div>
-      <div className={`sidebar ${sidebarOpen ? 'open' : ''}`}>
+      <div className={`sidebar ${sidebarOpen ? 'open' : 'closed'}`}>
         <button className="toggle-button" onClick={toggleSidebar}>
           <FontAwesomeIcon icon={sidebarOpen ? faTimes : faBars} />
         </button>
@@ -131,6 +147,11 @@ const handleUploadAudio = async () => {
           </div>
         )}
       </div>
+      {loading && ( // Display loading screen when 'loading' is true
+        <div className="loading-container">
+          <div className="loading-spinner"></div>
+        </div>
+      )}
     </div>
   );
 }
