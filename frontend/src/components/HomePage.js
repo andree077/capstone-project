@@ -22,9 +22,13 @@ function Homepage() {
         </header>
         <section class="hero" id="home">
             <div class="hero-content">
-                <h2>Welcome to Speech Emotion Recognition</h2>
-                <p>Using Federated Learning for Quality Assurance in Call Centres</p>
-                <a href="#about">Learn More</a>
+                <div class="white-box">
+                    <h2>Welcome to Speech Emotion Recognition</h2>
+                    <p>Using Federated Learning for Quality Assurance in Call Centres</p>
+                </div>
+                <div class="button-container">
+                    <a href="/about" class="hero-button">Learn More</a>
+                 </div>
             </div>
         </section>
 

@@ -16,7 +16,7 @@
 
 .sidebar.open {
   left: 0;
-  width: 250px;
+  width: 230px;
   /* Displayed when open */
 }
 
@@ -52,14 +52,39 @@
   background-color: #555;
 }
 
+/* Add this CSS to your styles */
+body {
+  background: url('../../images/login.png');
+  background-size: contain;
+  background-color: rgb(5,93,101);
+  background-repeat: no-repeat;
+  background-attachment: fixed; /* Ensures the background image remains fixed */
+  background-position: center center;
+  margin: 0; /* Remove default body margin */
+  padding: 0; /* Remove default body padding */
+}
+
 /* Content styles */
 .content {
-  margin-left: 250px;
+  margin: 0 auto; /* Center content horizontally */
+  margin-top: 150px;
   padding: 20px;
   display: flex;
   flex-direction: column;
-  align-items: center; /* Center content horizontally */
+  align-items: center;
   text-align: center; /* Center text in the content */
+}
+
+/* Add this CSS to your styles */
+.upload-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.upload-container input {
+  margin-bottom: 10px; /* Add space between input and button */
 }
 
 /* Improve text appearance */
@@ -67,13 +92,13 @@
   font-size: 32px;
   margin-bottom: 20px; /* Add space below heading */
   font-weight: bold;
-  color: #333; /* Text color for headings */
+  color: #fdfdfd; /* Text color for headings */
 }
 
 .content h2 {
   font-size: 28px;
   margin-bottom: 20px; /* Add space below subheading */
-  color: #555; /* Text color for subheadings */
+  color: #f0e6e6; /* Text color for subheadings */
 }
 
 /* Update text color and font size for regular text */

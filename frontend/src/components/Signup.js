@@ -32,6 +32,20 @@ function Signup() {
   };
 
   return (
+    <div>
+      <header>
+        <nav>
+            <div class="logo">
+                <h1>Speech Emotion Recognition</h1>
+            </div>
+            <ul>
+                <li><Link to="/">Home</Link></li>
+                <li><Link to="/about">About Us</Link></li>
+                <li><Link to="/contact">Contact Us</Link></li>
+                <li><Link to="/login">Log In</Link></li>
+            </ul>
+        </nav>
+    </header>
     <div className="signup-page">
       <h2>Sign Up</h2>
       {error && <p className="error-message">{error}</p>} {/* Display error message if it exists */}
@@ -50,9 +64,13 @@ function Signup() {
         />
         <button type="submit">Sign Up</button>
       </form>
-      <p>
-        Already have an account? <Link to="/login">Login</Link>
+      <p className="white-text">
+        Already have an account? <Link className="white-text" to="/login">Login</Link>
       </p>
+    <footer>
+        <p>&copy; 2023 Speech Emotion Recognition</p>
+    </footer>
+    </div>
     </div>
   );
 }

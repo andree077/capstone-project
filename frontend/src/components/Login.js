@@ -31,6 +31,20 @@ function Login() {
   };
 
   return (
+    <div>
+    <header>
+        <nav>
+            <div class="logo">
+                <h1>Speech Emotion Recognition</h1>
+            </div>
+            <ul>
+                <li><Link to="/">Home</Link></li>
+                <li><Link to="/about">About Us</Link></li>
+                <li><Link to="/contact">Contact Us</Link></li>
+                <li><Link to="/login">Log In</Link></li>
+            </ul>
+        </nav>
+    </header>
     <div className="login-page">
       
       <h2>Login</h2>
@@ -50,9 +64,13 @@ function Login() {
         />
         <button type="submit">Login</button>
       </form>
-      <p>
-        Don't have an account? <Link to="/signup">Sign Up</Link>
+      <p className="white-text">
+        Don't have an account? <Link className="white-text" to="/signup">Sign Up</Link>
       </p>
+    </div>
+    <footer>
+            <p>&copy; 2023 Speech Emotion Recognition</p>
+    </footer>
     </div>
   );
 }

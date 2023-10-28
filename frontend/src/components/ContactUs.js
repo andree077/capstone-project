@@ -22,6 +22,7 @@ function ContactUs() {
         </nav>
         </header>
       <div className='contact-us'>
+        <div class="white-box">
         <h2>Contact Us</h2>
         <p>If you have any questions or need assistance, please feel free to reach out to us:</p>
         <address>
@@ -29,7 +30,11 @@ function ContactUs() {
           <br />
           <strong>Email:</strong> info@callcenter.com
         </address>
+        </div>
       </div>
+      <footer>
+            <p>&copy; 2023 Speech Emotion Recognition</p>
+      </footer>
     </div>
   );
 }

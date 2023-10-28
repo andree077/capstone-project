@@ -10,7 +10,7 @@ app.use(express.json());
 app.use(cors());
 
 // Define MongoDB connection URL
-const mongoURL = 'mongodb+srv://andreroy:Sjbhs2018@cluster0.vbvc8wx.mongodb.net/?retryWrites=true&w=majority';
+const mongoURL = 'mongodb+srv://kristaldsouza:Kristal19@cluster0.vbvc8wx.mongodb.net/?retryWrites=true&w=majority';
 
 // Connect to MongoDB
 // Connect to MongoDB

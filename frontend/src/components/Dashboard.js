@@ -104,22 +104,25 @@ useEffect(() => {
 }, [loading]);
 
 
-
   return (
     <div>
       <div className={`sidebar ${sidebarOpen ? 'open' : 'closed'}`}>
         <button className="toggle-button" onClick={toggleSidebar}>
           <FontAwesomeIcon icon={sidebarOpen ? faTimes : faBars} />
         </button>
-        <button onClick={() => handleTabChange('Dashboard')}>Dashboard</button>
-        <button onClick={() => handleTabChange('Add Employee')}>Add Employee</button>
+        {sidebarOpen && (
+        <div className="menu-items">
+          <button onClick={() => handleTabChange('Dashboard')}>Dashboard</button>
+          <button onClick={() => handleTabChange('Add Employee')}>Add Employee</button>
+        </div>
+      )}
       </div>
-
       <div className="content">
         {activeTab === 'Dashboard' && (
           <div>
             <h1>Dashboard Content</h1>
             <h2>Audio Upload</h2>
+            <div className="upload-container">
             <input
               type="file"
               name="audio"
@@ -128,6 +131,7 @@ useEffect(() => {
               onChange={handleAudioFileChange}
             />
             <button onClick={handleUploadAudio}>Upload Audio</button>
+            </div>
           </div>
         )}
         {activeTab === 'Add Employee' && (
