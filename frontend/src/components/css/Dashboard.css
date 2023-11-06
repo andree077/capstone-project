@@ -92,13 +92,13 @@ body {
   font-size: 32px;
   margin-bottom: 20px; /* Add space below heading */
   font-weight: bold;
-  color: #fdfdfd; /* Text color for headings */
+  color: #000000; /* Text color for headings */
 }
 
 .content h2 {
   font-size: 28px;
   margin-bottom: 20px; /* Add space below subheading */
-  color: #f0e6e6; /* Text color for subheadings */
+  color: #000000; /* Text color for subheadings */
 }
 
 /* Update text color and font size for regular text */
