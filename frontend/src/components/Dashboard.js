@@ -1,163 +1,110 @@
 import React, { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBars, faTimes } from '@fortawesome/free-solid-svg-icons';
-import { Link, useNavigate } from 'react-router-dom';
-import { useEffect } from 'react';
+import { faBars , faTimes} from '@fortawesome/free-solid-svg-icons';
+import { useNavigate } from 'react-router-dom';
+import SideBar from './SideBar'; // Import the SideBar component
 import axios from 'axios';
 
-import './css/Dashboard.css';
-
 function Dashboard() {
-  const navigate = useNavigate();
-  const [sidebarOpen, setSidebarOpen] = useState(true);
-  const [activeTab, setActiveTab] = useState('Dashboard');
-  const [inputtedAudio, setInputtedAudio] = useState(null);
-  const [loading, setLoading] = useState(false);
-  const [employeeData, setEmployeeData] = useState({
-    // Initialize the state for employee data fields
-    firstName: '',
-    // Add more fields here
-  });
+    const navigate = useNavigate();
+    const [sidebarOpen, setSidebarOpen] = useState(true);
+    const [inputtedAudio, setInputtedAudio] = useState(null);
+    const [loading, setLoading] = useState(false);
+    const [employeeData, setEmployeeData] = useState({ firstName: '' });
 
-  let audioFiles = null
-  const toggleSidebar = () => {
-    setSidebarOpen(!sidebarOpen);
-  };
+    let audioFiles = null;
 
-  const handleTabChange = (tabName) => {
-    setActiveTab(tabName);
-  };
+    const toggleSidebar = () => {
+        setSidebarOpen(!sidebarOpen);
+    };
 
-  const handleEmployeeDataChange = (e) => {
-    const { name, value } = e.target;
-    setEmployeeData({
-      ...employeeData,
-      [name]: value,
-    });
-  };
+    const handleEmployeeDataChange = (e) => {
+        const { name, value } = e.target;
+        setEmployeeData({
+            ...employeeData,
+            [name]: value,
+        });
+    };
 
+    const handleAudioFileChange = (e) => {
+        audioFiles = e.target.files;
+        setInputtedAudio(audioFiles);
+    };
 
-  const handleAudioFileChange = (e) => {
-  const audioFiles = e.target.files;
-  setInputtedAudio(audioFiles);
-};
+    const sendAudioFilesToBackend = async () => {
+        const formData = new FormData();
+        for (const file of inputtedAudio) {
+            formData.append('audioFiles', file);
+        }
 
-// Define a function to send audio files to the backend
-const sendAudioFilesToBackend = async () => {
-  const formData = new FormData();
+        try {
+            const response = await axios.post('http://localhost:5000/upload-audio', formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            });
+            console.log(response);
 
-  // Append each audio file to the FormData object
-  for (const file of audioFiles) {
-    formData.append('audio', file);
-  }
+            if (response.status === 200) {
+                console.log('Audio files uploaded successfully');
+                return true;
+            } else {
+                console.error('Failed to upload audio files');
+                return false;
+            }
+        } catch (error) {
+            console.error('An error occurred while uploading audio files:', error);
+            return false;
+        }
+    };
 
-  try {
-    const response = await fetch('http://localhost:5000/upload-audio', {
-      method: 'POST',
-      body: formData,
-    });
+    const handleUploadAudio = async () => {
+        setLoading(true);
+        const success = await sendAudioFilesToBackend();
 
-    if (response.status === 200) {
-      alert('Audio files uploaded and processed successfully');
-    } else {
-      alert('Failed to upload audio files');
-    }
-  } catch (error) {
-    console.error(error);
-    alert('An error occurred');
-  }
-};
+        if (success) {
+            alert('Audio files uploaded and processed');
+        } else {
+            alert('Failed to upload audio files');
+        }
 
+        setLoading(false);
+    };
 
+    return (
+        <div className="flex">
+            <SideBar isOpen={sidebarOpen} toggleSidebar={toggleSidebar} />
 
-const handleUploadAudio = async () => {
-  try {
-    // Get the audio files from the state variable
-    audioFiles = inputtedAudio;
-    setLoading(true);
-
-    if (audioFiles) {
-      console.log(audioFiles);
-
-      // Trigger the function to send audio files to the backend
-      await sendAudioFilesToBackend(); // Assuming you have the sendAudioFilesToBackend function defined in your component
-
-      alert('Audio files uploaded and processed');
-    } else {
-      alert('No audio files selected');
-    }
-  } catch (error) {
-    console.error(error);
-    alert('An error occurred');
-  }
-};
-
-useEffect(() => {
-  // Automatically hide the loading screen after 10 seconds (10000 milliseconds)
-  if (loading) {
-    const timeoutId = setTimeout(() => {
-      setLoading(false);
-      clearTimeout(timeoutId);
-      navigate('/analysis');
-    }, 10000); // 10 seconds
-  }
-}, [loading]);
-
-
-  return (
-    <div>
-      <div className={`sidebar ${sidebarOpen ? 'open' : 'closed'}`}>
-        <button className="toggle-button" onClick={toggleSidebar}>
-          <FontAwesomeIcon icon={sidebarOpen ? faTimes : faBars} />
-        </button>
-        {sidebarOpen && (
-        <div className="menu-items">
-          <button onClick={() => handleTabChange('Dashboard')}>Dashboard</button>
-          <button onClick={() => handleTabChange('Add Employee')}>Add Employee</button>
-        </div>
-      )}
-      </div>
-      <div className="content">
-        {activeTab === 'Dashboard' && (
-          <div>
-            <h1>Dashboard Content</h1>
-            <h2>Audio Upload</h2>
-            <div className="upload-container">
-            <input
-              type="file"
-              name="audio"
-              accept=".wav, .mp3"
-              multiple
-              onChange={handleAudioFileChange}
-            />
-            <button onClick={handleUploadAudio}>Upload Audio</button>
+            {/* Main content area */}
+            <div className={`flex-1 p-10 transition-margin duration-300 ease-in-out ${sidebarOpen ? 'ml-64' : 'ml-0'}`}>
+                {/* Dashboard Content */}
+                <h1 className="text-2xl font-bold mb-4">Dashboard Content</h1>
+                <div>
+                    <h2 className="text-xl mb-3">Audio Upload</h2>
+                    <input
+                        type="file"
+                        name="audio"
+                        accept=".wav, .mp3"
+                        multiple
+                        onChange={handleAudioFileChange}
+                        className="mb-3"
+                    />
+                    <button onClick={handleUploadAudio} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Upload Audio</button>
+                </div>
+                <div>
+                    {/* Other dashboard functionalities */}
+                </div>
             </div>
-          </div>
-        )}
-        {activeTab === 'Add Employee' && (
-          <div>
-            <h2>Add Employee</h2>
-            <div className="input-container">
-              <input
-                type="text"
-                name="firstName"
-                placeholder="First Name"
-                value={employeeData.firstName}
-                onChange={handleEmployeeDataChange}
-              />
-            </div>
-            {/* Add more input fields for employee data */}
-            <button type="submit">Submit</button>
-          </div>
-        )}
-      </div>
-      {loading && ( // Display loading screen when 'loading' is true
-        <div className="loading-container">
-          <div className="loading-spinner"></div>
+
+            {/* Loading Overlay */}
+            {loading && (
+                <div className="absolute top-0 left-0 w-full h-full bg-gray-800 bg-opacity-50 flex justify-center items-center z-40">
+                    <div className="loader">Loading...</div>
+                </div>
+            )}
+
         </div>
-      )}
-    </div>
-  );
+    );
 }
 
 export default Dashboard;
