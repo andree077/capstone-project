@@ -5,6 +5,7 @@ import AboutPage from './pages/AboutPage'; // Assume these components exist
 import ContactPage from './pages/ContactPage';
 import Login from './components/Login';
 import Dashboard from './components/Dashboard';
+import Analysis from './components/Analysis';
 // import RegisterPage from './RegisterPage';
 
 function App() {
@@ -16,6 +17,8 @@ function App() {
                 <Route path="/contact" element={<ContactPage />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/dashboard" element={<Dashboard />} />
+                <Route path="/call-analysis" element={<Analysis />} />
+
 
                 {/* <Route path="/register" element={<RegisterPage />} /> */}
                 {/* Add other routes as needed */}
