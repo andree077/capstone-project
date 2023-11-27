@@ -17,7 +17,6 @@ const mongoURL = 'mongodb+srv://kristaldsouza:Kristal19@cluster0.vbvc8wx.mongodb
 mongoose.connect(mongoURL, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
-     // Use this option
   });
 
 
@@ -39,6 +38,7 @@ app.use(cors());
 app.use(authRoutes);
 app.use(employeeRoutes);
 app.use(audioRoutes);
+
 
 
 

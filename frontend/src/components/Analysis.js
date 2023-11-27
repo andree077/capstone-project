@@ -7,6 +7,9 @@ import axios from 'axios';
 import { Line } from 'react-chartjs-2';
 import { Pie } from 'react-chartjs-2';
 import Chart from 'chart.js/auto';
+import AnalysisDisplay from './AnalysisDisplay';
+import callCenterAnimation from 'C:/Projects/capstone-project/frontend/src/images/callCentreAnimation.png';
+
 
 function Analysis() {
     const navigate = useNavigate();
@@ -18,17 +21,19 @@ function Analysis() {
     const [chartInstances, setChartInstances] = useState({});
     const [aggregatedMetrics, setAggregatedMetrics] = useState(null);
     const [emotionDistribution, setEmotionDistribution] = useState({});
+    const [isDataAnalyzed, setIsDataAnalyzed] = useState(false);
+    const [showUpload, setShowUpload] = useState(true);
     const chartRefs = useRef({});
     const emotions = { 'happy': 1, 'angry': 2, 'confused': 3, 'neutral': 4 };
 
     let yourTestAnalysisData = [
         [
-            { id: 0, start: 0.0, end: 2.0, text: "Hello, I'm speaking to Amma.", emotion: 'happy', speaker: 'SPEAKER 1' },
+            { id: 0, start: 0.0, end: 2.0, text: "Hello, I'm speaking to Amma.", emotion: 'confused', speaker: 'SPEAKER 1' },
             { id: 1, start: 5.0, end: 6.0, text: "Hello, I'm speaking to Amma.", emotion: 'happy', speaker: 'SPEAKER 1' },
             { id: 2, start: 8.9, end: 10.0, text: "Hello, I'm speaking to Amma.", emotion: 'angry', speaker: 'SPEAKER 1' },
             { id: 3, start: 4.52, end: 8.66, text: 'This is Prithvi calling from...', emotion: 'happy', speaker: 'SPEAKER 2' },
             { id: 4, start: 7.52, end: 9.66, text: 'This is Prithvi calling from...', emotion: 'angry', speaker: 'SPEAKER 2' },
-            { id: 5, start: 10.52, end: 11.66, text: 'This is Prithvi calling from...', emotion: 'happy', speaker: 'SPEAKER 2' }
+            { id: 5, start: 10.52, end: 11.66, text: 'This is Prithvi calling from...', emotion: 'confused', speaker: 'SPEAKER 2' }
         ],
         // Call 2 Data
         [
@@ -44,6 +49,14 @@ function Analysis() {
             { id: 4, start: 7.52, end: 9.66, text: 'This is Prithvi calling from...', emotion: 'angry', speaker: 'SPEAKER 2' },
             { id: 5, start: 10.52, end: 11.66, text: 'This is Prithvi calling from...', emotion: 'confused', speaker: 'SPEAKER 2' }
         ],
+        [
+            { id: 0, start: 0.0, end: 2.0, text: "Hello, I'm speaking to Amma.", emotion: 'confused', speaker: 'SPEAKER 1' },
+            { id: 1, start: 5.0, end: 6.0, text: "Hello, I'm speaking to Amma.", emotion: 'happy', speaker: 'SPEAKER 1' },
+            { id: 2, start: 8.9, end: 10.0, text: "Hello, I'm speaking to Amma.", emotion: 'angry', speaker: 'SPEAKER 1' },
+            { id: 3, start: 4.52, end: 8.66, text: 'This is Prithvi calling from...', emotion: 'happy', speaker: 'SPEAKER 2' },
+            { id: 4, start: 7.52, end: 9.66, text: 'This is Prithvi calling from...', emotion: 'angry', speaker: 'SPEAKER 2' },
+            { id: 5, start: 10.52, end: 11.66, text: 'This is Prithvi calling from...', emotion: 'confused', speaker: 'SPEAKER 2' }
+        ]
     ];
 
     const toggleSidebar = () => {
@@ -67,7 +80,9 @@ function Analysis() {
                     speakerData[speakerKey] = [];
                 }
                 speakerData[speakerKey].push({
-                    time: segment.start,
+                    start: segment.start,
+                    end: segment.end,
+                    text: segment.text,
                     emotion: segment.emotion
                 });
             });
@@ -77,14 +92,25 @@ function Analysis() {
 
     const performAnalysis = async () => {
         setLoading(true);
-        // Replace this with actual uploading logic
+        setShowUpload(false); // Hide upload section
+
         setTimeout(() => {
             const processedData = processAnalysisData(yourTestAnalysisData);
             setCallsData(processedData);
-            setAggregatedMetrics(calculateAggregatedMetrics(processedData));
+            const metrics = calculateAggregatedMetrics(processedData);
+            setAggregatedMetrics(metrics);
+            setSelectedCall('0');
             setLoading(false);
-        }, 3000);
+            setIsDataAnalyzed(true);
+        }, 5000); // Simulate 5-second loading
     };
+
+    const handleNewAnalysis = () => {
+        setShowUpload(true);
+        setIsDataAnalyzed(false);
+        setAggregatedMetrics(null);
+    };
+
 
     const emotionToValue = (emotion) => {
         const emotions = { 'happy': 1, 'angry': 2, 'confused': 3, 'neutral': 4 };
@@ -105,7 +131,7 @@ function Analysis() {
         chartRefs.current[canvasId] = new Chart(ctx, {
             type: 'line',
             data: {
-                labels: data.map(d => `${d.time}`),
+                labels: data.map(d => `${d.start}`),
                 datasets: [{
                     label: 'Emotion Over Time',
                     data: data.map(d => emotionToValue(d.emotion)),
@@ -150,7 +176,6 @@ function Analysis() {
         let totalSatisfaction = 0;
         let emotionCounts = {};
         let totalDuration = 0;
-        let duration = 0;
         let callCount = data.length;
 
         data.forEach(call => {
@@ -161,16 +186,16 @@ function Analysis() {
                 });
             });
         });
+
         data.forEach(call => {
+            let callEndTimes = [];
             Object.values(call).forEach(speaker => {
-                let duration = 0;
                 speaker.forEach(segment => {
-                    if (duration < segment.end) {
-                        duration = segment.end
-                    }
+                    callEndTimes.push(segment.end);
+                    console.log("time:", segment['end']);
                 });
-                totalDuration += duration;
             });
+            totalDuration += Math.max(...callEndTimes);
         });
 
         const mostCommonEmotion = Object.keys(emotionCounts).reduce((a, b) => emotionCounts[a] > emotionCounts[b] ? a : b, "");
@@ -184,6 +209,31 @@ function Analysis() {
             mostCommonEmotion: mostCommonEmotion,
             totalCallsProcessed: callCount,
             averageCallDuration: averageDuration.toFixed(2)
+        };
+    };
+
+    const calculateIndividualCallMetrics = (call) => {
+        let maxEndTime = 0;
+        let totalEmotionScore = 0;
+        let segmentCount = 0;
+    
+        Object.values(call).forEach(speakerData => {
+            speakerData.forEach(segment => {
+                maxEndTime = Math.max(maxEndTime, segment.end || 0);
+                totalEmotionScore += emotionScore(segment.emotion);
+                segmentCount++;
+            });
+        });
+    
+        // Ensure segmentCount is not zero to avoid division by zero
+        if (segmentCount === 0) {
+            return { callDuration: '0', customerSatisfactionScore: '0' };
+        }
+    
+        const customerSatisfactionScore = (totalEmotionScore - segmentCount * -3) / (segmentCount * 3 - segmentCount * -3) * 10;
+        return {
+            callDuration: maxEndTime.toFixed(2),
+            customerSatisfactionScore: customerSatisfactionScore.toFixed(2)
         };
     };
 
@@ -203,6 +253,10 @@ function Analysis() {
         };
     };
 
+    const handleAnalysisCompletion = () => {
+        performAnalysis();
+    };
+
     
 
     return (
@@ -213,8 +267,7 @@ function Analysis() {
                 <button onClick={toggleSidebar} className="text-white absolute top-0 right-0 mt-2 mr-2">
                     <FontAwesomeIcon icon={sidebarOpen ? faTimes : faBars} size="lg" />
                 </button>
-
-                <h1 className="text-2xl font-bold mb-4">Analysis Content</h1>
+                {showUpload && (
                 <div>
                     <h2 className="text-xl mb-3">Audio Upload</h2>
                     <input type="file" multiple onChange={handleFileChange} className="mb-4" />
@@ -222,46 +275,31 @@ function Analysis() {
                         Upload and Analyze Audio
                     </button>
                 </div>
+            )}
 
             {loading && (
                 <div className="absolute top-0 left-0 w-full h-full bg-gray-800 bg-opacity-50 flex justify-center items-center z-40">
-                    <div className="loader">Loading...</div>
+                    <img src={callCenterAnimation} alt="Call Center Loading Animation" className="w-1/4" style={{ maxWidth: '100px' }} />
+
                 </div>
             )}
+                {isDataAnalyzed && (
+                <>
+                    <h1 className="text-2xl font-bold mb-4">Analysis Content</h1>
 
-            {aggregatedMetrics && (
-                <div className="my-4 p-4 bg-white rounded shadow-lg">
-                    <h2 className="text-xl font-semibold mb-3">Aggregated Metrics Across All Calls</h2>
-                    <table className="table-auto w-full mb-4">
-                        <tbody>
-                            <tr><td>Overall Customer Satisfaction Score:</td><td>{aggregatedMetrics.overallCustomerSatisfaction}</td></tr>
-                            <tr><td>Most Commonly Predicted Emotion:</td><td>{aggregatedMetrics.mostCommonEmotion}</td></tr>
-                            <tr><td>Total Calls Processed:</td><td>{aggregatedMetrics.totalCallsProcessed}</td></tr>
-                            <tr><td>Average Call Duration:</td><td>{aggregatedMetrics.averageCallDuration} seconds</td></tr>
-                        </tbody>
-                    </table>
-                    <div className="w-64 mx-auto">
-                        <Pie data={emotionDistribution} />
-                    </div>
-                </div>
+                    <AnalysisDisplay
+                        aggregatedMetrics={aggregatedMetrics}
+                        emotionDistribution={emotionDistribution}
+                        callsData={callsData}
+                        selectedCall={selectedCall}
+                        handleChangeCall={handleChangeCall}
+                        calculateIndividualCallMetrics={calculateIndividualCallMetrics}
+                    />
+                    <button onClick={handleNewAnalysis} className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mt-4">
+                        Analyze Another Set of Calls
+                    </button>
+                </>
             )}
-
-            <select onChange={handleChangeCall} className="form-select block w-full mt-1 rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
-                <option value="">Select a Call</option>
-                {callsData.map((_, index) => (
-                    <option key={index} value={index}>Call {index + 1}</option>
-                ))}
-            </select>
-
-            {/* Graphs for Selected Call */}
-            {selectedCall !== '' && Object.entries(callsData[selectedCall]).map(([speaker, data], index) => (
-                <div key={index} className="graph-container my-6 p-4 bg-white rounded shadow-lg">
-                    <h2 className="text-xl font-semibold mb-3">{speaker} - Call {parseInt(selectedCall) + 1}</h2>
-                    <div className="graph w-full h-64">
-                        <canvas id={`canvas${selectedCall}_${speaker}`}></canvas>
-                    </div>
-                </div>
-            ))}
             </div>
         </div>
     );
