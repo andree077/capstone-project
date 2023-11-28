@@ -93,6 +93,16 @@ function Analysis() {
     const performAnalysis = async () => {
         setLoading(true);
         setShowUpload(false); // Hide upload section
+        const formData = new FormData();
+        uploadedFiles.forEach(file => {
+            formData.append('audioFiles', file);
+        });
+
+        try {
+            const response = await axios.post('http://localhost:5000/upload-audio', formData);
+        } catch (error) {
+            console.error('Upload error:', error);
+        }
 
         setTimeout(() => {
             const processedData = processAnalysisData(yourTestAnalysisData);
