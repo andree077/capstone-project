@@ -1,6 +1,6 @@
 import React from 'react';
 import TopBar from '../components/TopBar'; // Import TopBar component
-import backgroundImg from 'C:/Projects/capstone-project/frontend/src/images/homepage.png'; // Replace with actual path
+import backgroundImg from 'D:/Projects/capstone-project/frontend/src/images/homepage.png'; // Replace with actual path
 
 function HomePage() {
     return (

@@ -32,7 +32,7 @@ from pathlib import WindowsPath
 temp = pathlib.PosixPath
 pathlib.PosixPath = pathlib.WindowsPath
 
-model_path_str = "C:/Projects/capstone-project/backend/embedding_model.pth"
+model_path_str = "D:/Projects/capstone-project/backend/embedding_model.pth"
 model_path = WindowsPath(os.path.normpath(model_path_str))
 
 # Load the model and map it to the CPU
@@ -182,7 +182,7 @@ def predict_emotion(features,model):
   print("in prediction")
   return predicted_class_label
 
-input_directory = 'C:/Projects/capstone-project/backend/uploads/'
+input_directory = 'D:/Projects/capstone-project/backend/uploads/'
 
 call_data = []
 
@@ -198,7 +198,7 @@ for filename in os.listdir(input_directory):
 
   for segment in call_dict:
       #extract features
-    features = feature_extraction(segment, call_rec)
+    features = feature_extraction(segment, audio_path)
     model = load_model()
     emotion = predict_emotion(features,model)
     segment['emotion'] = emotion

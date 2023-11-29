@@ -8,7 +8,7 @@ import { Line } from 'react-chartjs-2';
 import { Pie } from 'react-chartjs-2';
 import Chart from 'chart.js/auto';
 import AnalysisDisplay from './AnalysisDisplay';
-import callCenterAnimation from 'C:/Projects/capstone-project/frontend/src/images/callCentreAnimation.png';
+import callCenterAnimation from 'D:/Projects/capstone-project/frontend/src/images/callCentreAnimation.png';
 
 
 function Analysis() {
@@ -27,6 +27,7 @@ function Analysis() {
     const emotions = { 'happy': 1, 'angry': 2, 'confused': 3, 'neutral': 4 };
 
     let yourTestAnalysisData = [
+        // Call 1 Data
         [
             { id: 0, start: 0.0, end: 2.0, text: "Hello, I'm speaking to Amma.", emotion: 'confused', speaker: 'SPEAKER 1' },
             { id: 1, start: 5.0, end: 6.0, text: "Hello, I'm speaking to Amma.", emotion: 'happy', speaker: 'SPEAKER 1' },
@@ -40,15 +41,7 @@ function Analysis() {
             { id: 0, start: 0.0, end: 2.0, text: "Hello, I'm speaking to Amma.", emotion: 'angry', speaker: 'SPEAKER 2' },
             { id: 1, start: 4.52, end: 8.66, text: 'This is Prithvi calling from...', emotion: 'happy', speaker: 'SPEAKER 2' }
         ],
-
-        [
-            { id: 0, start: 0.0, end: 2.0, text: "Hello, I'm speaking to Amma.", emotion: 'confused', speaker: 'SPEAKER 1' },
-            { id: 1, start: 5.0, end: 6.0, text: "Hello, I'm speaking to Amma.", emotion: 'happy', speaker: 'SPEAKER 1' },
-            { id: 2, start: 8.9, end: 10.0, text: "Hello, I'm speaking to Amma.", emotion: 'angry', speaker: 'SPEAKER 1' },
-            { id: 3, start: 4.52, end: 8.66, text: 'This is Prithvi calling from...', emotion: 'happy', speaker: 'SPEAKER 2' },
-            { id: 4, start: 7.52, end: 9.66, text: 'This is Prithvi calling from...', emotion: 'angry', speaker: 'SPEAKER 2' },
-            { id: 5, start: 10.52, end: 11.66, text: 'This is Prithvi calling from...', emotion: 'confused', speaker: 'SPEAKER 2' }
-        ],
+        // Call 3 Data
         [
             { id: 0, start: 0.0, end: 2.0, text: "Hello, I'm speaking to Amma.", emotion: 'confused', speaker: 'SPEAKER 1' },
             { id: 1, start: 5.0, end: 6.0, text: "Hello, I'm speaking to Amma.", emotion: 'happy', speaker: 'SPEAKER 1' },
@@ -104,6 +97,16 @@ function Analysis() {
             console.error('Upload error:', error);
         }
 
+        // try {
+        //     const response = await axios.post('http://localhost:5000/upload-audio', formData);
+        //     setCallsData(response.data); // Assuming the backend sends data in the desired format
+        //     setIsDataAnalyzed(true);
+        // } catch (error) {
+        //     console.error('Upload error:', error);
+        // } finally {
+        //     setLoading(false);
+        // }
+
         setTimeout(() => {
             const processedData = processAnalysisData(yourTestAnalysisData);
             setCallsData(processedData);
@@ -132,12 +135,15 @@ function Analysis() {
     };
 
     const createChart = (canvasId, data) => {
-        const ctx = document.getElementById(canvasId).getContext('2d');
+        const ctx = document.getElementById(canvasId);
+        if (!ctx) return; // Guard clause if canvas is not found
 
+        // Destroy previous chart if exists
         if (chartRefs.current[canvasId]) {
             chartRefs.current[canvasId].destroy();
         }
 
+        // Create new chart instance
         chartRefs.current[canvasId] = new Chart(ctx, {
             type: 'line',
             data: {

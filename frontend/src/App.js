@@ -6,6 +6,7 @@ import ContactPage from './pages/ContactPage';
 import Login from './components/Login';
 import Dashboard from './components/Dashboard';
 import Analysis from './components/Analysis';
+import EmployeeManagement from './pages/employeeManagement';
 // import RegisterPage from './RegisterPage';
 
 function App() {
@@ -18,7 +19,7 @@ function App() {
                 <Route path="/login" element={<Login />} />
                 <Route path="/dashboard" element={<Dashboard />} />
                 <Route path="/call-analysis" element={<Analysis />} />
-
+                <Route path="/employee-management" element={<EmployeeManagement />} />
 
                 {/* <Route path="/register" element={<RegisterPage />} /> */}
                 {/* Add other routes as needed */}
